@@ -1,0 +1,10 @@
+[
+	{
+		"id": "aliasFolder",
+		"caption": "Alias Folder",
+		"command": "alias_folder",
+		"args": {
+			"paths": []
+		}
+	}
+]
