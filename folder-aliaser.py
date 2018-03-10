@@ -51,7 +51,8 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 		# Clear alias if empty or the same as the last part of the path
 		if alias == '' or alias == path.split('/')[-1]:
-			projectData['folders'][index].pop('name')
+			if 'name' in projectData['folders'][index]:
+				projectData['folders'][index].pop('name')
 		else:
 			projectData['folders'][index]['name'] = alias
 
