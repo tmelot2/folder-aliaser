@@ -17,8 +17,11 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 			a text input panel used to enter an alias for the selected folder.
 		'''
 
-		# TODO: Error if more than one selected
-		selectedPath = kwargs['paths'][0]
+		if len(kwargs['paths']) > 1:
+			self.window.status_message("Can't alias multiple folders at once, please select just one folder to alias.")
+			return
+		else:
+			selectedPath = kwargs['paths'][0]
 
 		# Get current alias or name
 		projectData = self.window.project_data()
