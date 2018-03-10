@@ -5,7 +5,7 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths=[]):
 		'''
-			Returns true if there is exactly one requested path and it matches one of the top-level folders in the
+			Returns true if there is exactly one selected path and it matches one of the top-level folders in the
 			current project.
 		'''
 		return len(paths) == 1 and self.get_project_folder_index(paths[0]) >=0
@@ -14,7 +14,7 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, *args, **kwargs):
 		'''
 			Called by Sublime when this command is run. Validates that you've only selected one folder and then opens
-			a text input panel used to enter the folder alias.
+			a text input panel used to enter an alias for the selected folder.
 		'''
 
 		# TODO: Error if more than one selected
@@ -22,11 +22,11 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 		# Get current alias or name
 		projectData = self.window.project_data()
-		item = projectData['folders'][self.get_project_folder_index(selectedPath)]
-		if 'name' in item:
-			currentName = item['name']
+		projectFolder = projectData['folders'][self.get_project_folder_index(selectedPath)]
+		if 'name' in projectFolder:
+			currentName = projectFolder['name']
 		else:
-			currentName = item['path'].split('/')[-1]
+			currentName = projectFolder['path'].split('/')[-1]
 
 		# aah lots of barking! afk ... oh, just packages, bou was IN THE AIR haha
 		panel = self.window.show_input_panel(
