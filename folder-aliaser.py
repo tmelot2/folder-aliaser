@@ -6,10 +6,11 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths=[]):
 		'''
-			Returns true if there is exactly one selected path and it matches one of the top-level folders in the
-			current project.
+			Called by Sublime when the Side Bar's right click menu is rendered to determine if the Alias Folder menu
+			option is active or not. Returns true if there is exactly one selected folder and it matches one of the
+			top-level folders in the current project. 'paths' is the list of selected folders.
 		'''
-		return len(paths) == 1 and self.get_project_folder_index(paths[0]) >=0
+		return len(paths) == 1 and self._project_has_folder(paths[0])
 
 
 	def run(self, *args, **kwargs):
@@ -18,55 +19,88 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 			a text input panel used to enter an alias for the selected folder.
 		'''
 
+		# Validates that you've only selected one folder.
+		#
 		if len(kwargs['paths']) > 1:
 			self.window.status_message("Can't alias multiple folders at once, please select just one folder to alias.")
 			return
-		else:
-			selectedPath = kwargs['paths'][0]
+
+		# Get the selected folder's path.
+		selectedPath = kwargs['paths'][0]
 
 		# Get current alias or name
-		projectData = self.window.project_data()
-		projectFolder = projectData['folders'][self.get_project_folder_index(selectedPath)]
-		if 'name' in projectFolder:
-			currentName = projectFolder['name']
+		#
+		folders = self._get_project_folders()
+		selectedFolder = folders[self._get_project_folder_index(selectedPath)]
+		if 'name' in selectedFolder:
+			currentName = selectedFolder['name']
 		else:
-			currentName = projectFolder['path'].split('/')[-1]
+			currentName = selectedFolder['path'].split('/')[-1]
 
-		# aah lots of barking! afk ... oh, just packages, bou was IN THE AIR haha
+		# Show input panel where user types in alias name
+		#
 		panel = self.window.show_input_panel(
 			"Alias this folder (enter nothing to clear an alias):",
 			currentName,
-			functools.partial(self.on_done, path=str(selectedPath)),
+			functools.partial(self.on_input_panel_submit, path=str(selectedPath)),
 			None,
 			None
 		)
 
 
-	def on_done(self, alias, path):
+	def on_input_panel_submit(self, alias, path):
 		'''
 			TODO
 		'''
 
-		index = self.get_project_folder_index(path)
-		projectData = self.window.project_data()
+		index = self._get_project_folder_index(path)
+		folders = self._get_project_folders()
+		targetFolder = folders[index]
 
 		# Clear alias if empty or the same as the last part of the path
+		#
 		if alias == '' or alias == path.split('/')[-1]:
-			if 'name' in projectData['folders'][index]:
-				projectData['folders'][index].pop('name')
+			if 'name' in targetFolder:
+				targetFolder.pop('name')
 		else:
-			projectData['folders'][index]['name'] = alias
+			targetFolder['name'] = alias
 
+		# Save
+		self._save_project_folders(folders)
+
+
+	def _get_project_folders(self):
+		'''
+			Returns a list of the 'folders' array in the current project's sublime-project file.
+		'''
+		print(type(self.window.project_data().get('folders')))
+		return self.window.project_data().get('folders')
+
+
+	def _save_project_folders(self, folders):
+		'''
+			Saves the given list of folders into the 'folders' property in the current
+			sublime-project.
+		'''
+		projectData = self.window.project_data()
+		projectData['folders'] = folders
 		self.window.set_project_data(projectData)
 
 
-	def get_project_folder_index(self, path):
+	def _project_has_folder(self, path):
+		'''
+			Returns true if the current project has the given path as a project folder.
+		'''
+		return self._get_project_folder_index(path) >= 0
+
+
+	def _get_project_folder_index(self, path):
 		'''
 			Searches the current project's folders list for an item with the given path, returns the index if found,
-			otherwise -1.
+			otherwise -1. Simple linear search.
 		'''
 
-		folders = self.window.project_data().get('folders')
+		folders = self._get_project_folders()
 		# Listcomp to get index of the folder with the given path.
 		foundIndex = [index for index, folder in enumerate(folders) if folder['path'] == path]
 		if len(foundIndex) > 0:
