@@ -6,29 +6,23 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 	def is_enabled(self, paths=[]):
 		'''
-			Called by Sublime when the Side Bar's right click menu is rendered to determine if the Alias Folder menu
-			option is active or not. Returns true if there is exactly one selected folder and it matches one of the
-			top-level folders in the current project. 'paths' is the list of selected folders.
+			Called by Sublime when it needs to know if the Alias Folder menu option is active when right-clicking on an
+			item in the Side Bar Folders. It should be active when a single, top-level folder is selected.
 		'''
+		# There should be only one selection and the selection must exist in the current project's folders.
 		return len(paths) == 1 and self._project_has_folder(paths[0])
 
 
 	def run(self, *args, **kwargs):
 		'''
-			Called by Sublime when this command is run. Validates that you've only selected one folder and then opens
-			a text input panel used to enter an alias for the selected folder.
+			Called by Sublime when this command is run. Gets the appropriate data and opens a Sublime text input panel
+			where user enters an alias. A callback is passed to the input panel to handle submission.
 		'''
-
-		# Validates that you've only selected one folder.
-		#
-		if len(kwargs['paths']) > 1:
-			self.window.status_message("Can't alias multiple folders at once, please select just one folder to alias.")
-			return
 
 		# Get the selected folder's path.
 		selectedPath = kwargs['paths'][0]
 
-		# Get current alias or name
+		# Get current alias or folder name
 		#
 		folders = self._get_project_folders()
 		selectedFolder = folders[self._get_project_folder_index(selectedPath)]
@@ -42,7 +36,7 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 		panel = self.window.show_input_panel(
 			"Alias this folder (enter nothing to clear an alias):",
 			currentName,
-			functools.partial(self.on_input_panel_submit, path=str(selectedPath)),
+			functools.partial(self.on_input_panel_submit, path=selectedPath),
 			None,
 			None
 		)
