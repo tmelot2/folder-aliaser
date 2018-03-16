@@ -89,6 +89,9 @@ class ProjectFolders:
 		projectData['folders'] = folders
 		self._window.set_project_data(projectData)
 
+		# Update the local version
+		self._folders = folders
+
 
 class AliasFolderCommand(sublime_plugin.WindowCommand):
 
