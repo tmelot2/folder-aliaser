@@ -9,6 +9,8 @@ import functools
 #	[ ] Persist ProjectFolders instance in AliasFolderCommand
 #	[ ] Not great that __getitem__() constantly reloads
 #	[ ] Project Folders expand collapse state clears after an edit
+#	[ ] Remove reload(), don't need it, make comment that object inits before each thing is run, so
+#		it's ok if it looks like it could be in a bad state.
 
 class ProjectFolders:
 
@@ -43,7 +45,7 @@ class ProjectFolders:
 		'''
 			Returns the list of folders.
 		'''
-		return self._folders
+		return list(self._folders)
 
 	def has_folder(self, path):
 		return self.get_index(path) >= 0
@@ -136,8 +138,8 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 		projectFolders = ProjectFolders(self.window)
 		index = projectFolders.get_index(path)
 
-		# Make local copy of folders list to operate on
-		folders = list(projectFolders.get_folders())
+		# Get a copy of the project folders list to operate on
+		folders = projectFolders.get_folders()
 
 		# Save reference so code is cleaner
 		targetFolder = folders[index]
