@@ -43,7 +43,7 @@ class ProjectFolders:
 
 	def get_folders(self):
 		'''
-			Returns the list of folders.
+			Returns a copy of the list of folders.
 		'''
 		return list(self._folders)
 
