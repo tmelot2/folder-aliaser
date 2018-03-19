@@ -115,11 +115,10 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 		# Get the selected folder's path.
 		selectedPath = kwargs['paths'][0]
 
-		# Get current alias or folder name
+		# Get the display name (will be the alias or the folder name itself)
 		pathDisplayName = ProjectFolders(self.window).get_display_name(selectedPath)
 
-		# Show input panel where user types in alias name
-		#
+		# Show input panel where user types in the folder alias
 		panel = self.window.show_input_panel(
 			"Alias this folder (enter nothing to clear an alias):",
 			pathDisplayName,
@@ -133,24 +132,21 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 		'''
 			TODO
 		'''
-		# Get project folders and index of the folder with given path
-
 		projectFolders = ProjectFolders(self.window)
 		index = projectFolders.get_index(path)
 
-		# Get a copy of the project folders list to operate on
-		folders = projectFolders.get_folders()
+		if index > -1:
+			folders = projectFolders.get_folders()
+			# Save reference so below code is cleaner
+			targetFolder = folders[index]
 
-		# Save reference so code is cleaner
-		targetFolder = folders[index]
+			# Clear alias if empty or the same as the folder name (last part of the path)
+			#
+			if alias == '' or alias == path.split('/')[-1]:
+				if 'name' in targetFolder:
+					targetFolder.pop('name')
+			else:
+				targetFolder['name'] = alias
 
-		# Clear alias if empty or the same as the last part of the path
-		#
-		if alias == '' or alias == path.split('/')[-1]:
-			if 'name' in targetFolder:
-				targetFolder.pop('name')
-		else:
-			targetFolder['name'] = alias
-
-		# Save
-		projectFolders.save(folders)
+			# Save
+			projectFolders.save(folders)
