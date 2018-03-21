@@ -10,4 +10,4 @@ items in the `folders` array. If this is an issue, then the current version of t
 TODO
 
 # License
-TODO
+The code is free to use. This is my first Sublime Text plugin so there are a ton of comments. Should be pretty easy to follow.
