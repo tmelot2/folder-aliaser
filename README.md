@@ -15,5 +15,8 @@ Right-click on any top-level folder in the Side Bar, choose "Alias Folder", and 
 # Contributions, issues, questions, etc.
 TODO
 
+# Thanks
+This project was inspired by [rablador's FolderAlias](https://bitbucket.org/rablador/folderalias) plugin and a desire to provide an easier way to alias folders without having to manually edit a JSON file.
+
 # License
 The code is free to use. This is my first Sublime Text plugin so there are a ton of comments. Should be pretty easy to follow.
