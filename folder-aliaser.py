@@ -14,8 +14,9 @@ class ProjectFolders:
 	'''
 
 	def __init__(self, window):
-		# Save a reference to the window, used for refreshing the project folders.
+		# Save a reference to the window, used to read / write project data.
 		self._window = window
+		# Save the current project's folders.
 		self._folders = self._window.project_data().get("folders")
 
 	def get_folders(self):
