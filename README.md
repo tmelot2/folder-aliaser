@@ -10,7 +10,7 @@ items in the `folders` array. If this is an issue, then the current version of t
 
 * After entering an alias, the Side Bar refreshes and collapses previously expanded folders.
 
-# Contribution
+# Contributions, issues, questions, etc.
 TODO
 
 # License
