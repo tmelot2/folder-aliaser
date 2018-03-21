@@ -2,12 +2,6 @@ import sublime_plugin
 import sublime
 import functools
 
-# ___  __      __   __
-#  |  /  \    |  \ /  \ .
-#  |  \__/    |__/ \__/ .
-#
-#	[ ] Project Folders expand collapse state clears after an edit
-
 class ProjectFolders:
 	'''
 		A simple class used to interact with the current project's folders.
