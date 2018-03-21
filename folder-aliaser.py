@@ -6,40 +6,17 @@ import functools
 #  |  /  \    |  \ /  \ .
 #  |  \__/    |__/ \__/ .
 #
-#	[ ] Persist ProjectFolders instance in AliasFolderCommand
-#	[ ] Not great that __getitem__() constantly reloads
 #	[ ] Project Folders expand collapse state clears after an edit
-#	[ ] Remove reload(), don't need it, make comment that object inits before each thing is run, so
-#		it's ok if it looks like it could be in a bad state.
 
 class ProjectFolders:
+	'''
+		A simple class used to interact with the current project's folders.
+	'''
 
 	def __init__(self, window):
-		'''
-			TODO
-		'''
 		# Save a reference to the window, used for refreshing the project folders.
 		self._window = window
-		#self._reload()
 		self._folders = self._window.project_data().get("folders")
-
-	def __getitem__(self, index):
-		'''
-			Returns project folder at given index.
-		'''
-		#self._reload()
-		return self._folders[index]
-
-	def __setitem__(self, index, value):
-		self._folders[index] = value
-
-	#def _reload(self):
-		'''
-			Reloads the current project file and thus loads any updated folders.
-
-			TODO: _reload() the right format?
-		'''
-		#self._folders = self._window.project_data().get("folders")
 
 	def get_folders(self):
 		'''
@@ -48,13 +25,15 @@ class ProjectFolders:
 		return list(self._folders)
 
 	def has_folder(self, path):
+		'''
+			Returns true if project has folder with given path.
+		'''
 		return self.get_index(path) >= 0
 
 	def get_index(self, path):
 		'''
 			Returns index of the project folder that has a path matching the given path. Returns -1 if not found.
 		'''
-		#self._reload()
 		for index, folder in enumerate(self._folders):
 			if folder['path'] == path:
 				return index
@@ -72,7 +51,6 @@ class ProjectFolders:
 				   '/a/b/c/'
 				3) No match - No folders in the project match the given path, return None
 		'''
-		#self._reload()
 		for folder in self._folders:
 			if folder['path'] == path:
 				if 'name' in folder:
@@ -130,11 +108,12 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 	def on_input_panel_submit(self, alias, path):
 		'''
-			TODO
+			Called by Sublime when user submits the alias input. Updates or clears the alias.
 		'''
 		projectFolders = ProjectFolders(self.window)
 		index = projectFolders.get_index(path)
 
+		# If path is in project
 		if index > -1:
 			folders = projectFolders.get_folders()
 			# Save reference so below code is cleaner
