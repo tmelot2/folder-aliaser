@@ -102,7 +102,8 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 	def on_input_panel_submit(self, alias, path):
 		'''
-			Called by Sublime when user submits the alias input. Updates or clears the alias.
+			Called by Sublime when user submits the alias input. Saves the alias into the project
+			file. Clears alias if user entered nothing or the folder name.
 		'''
 		projectFolders = ProjectFolders(self.window)
 		index = projectFolders.get_index(path)
