@@ -14,7 +14,7 @@ When it's finished and I publish it, install via Package Control ([installation 
 Right-click on any top-level folder in the Side Bar, choose "Alias Folder", and type the alias you want. Simple!
 
 # Contributions, issues, questions, etc.
-TODO
+Please feature branch from `master` and submit a pull request. And please submit any issues you find!
 
 # Thanks
 This project was inspired by [rablador's FolderAlias](https://bitbucket.org/rablador/folderalias) plugin and a desire to provide an easier way to alias folders without having to manually edit a JSON file.
