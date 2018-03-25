@@ -1,11 +1,14 @@
 # Folder Aliaser
 
 Alias your project folders quickly and easily! Right-click on any top-level folder in the Side Bar and choose "Alias
-Folder". It's helpful to resolve name collisions or to provide friendlier names for folders.
+Folder...". It's helpful to resolve name collisions or to provide friendlier names for folders.
 
 This plugin works by **modifying your current `sublime-project` file**. Specifically, it edits the `name` property of
 items in the `folders` array. If this is an issue, then the current version of this plugin won't work for you, but
 please let me know so I can look at alternative solutions!
+
+There exists a similar project (FolderAlias, see Thanks below) that is no longer maintained. This project exists to be
+simpler (from both user and code perspectives) and maintained.
 
 # Installation
 When it's finished and I publish it, install via Package Control ([installation instructions](https://packagecontrol.io/installation) and [usage guide](https://packagecontrol.io/docs/usage)).
