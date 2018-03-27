@@ -11,7 +11,9 @@ There exists a similar project (FolderAlias, see Thanks below) that is no longer
 simpler (from both user and code perspectives) and maintained.
 
 # Installation
-When it's finished and I publish it, install via Package Control ([installation instructions](https://packagecontrol.io/installation) and [usage guide](https://packagecontrol.io/docs/usage)).
+Install via Package Control ([installation instructions](https://packagecontrol.io/installation) and [usage guide](https://packagecontrol.io/docs/usage)).
+
+Open the Goto Anything palette, run Package Control: Install Package, and select Folder Aliaser.
 
 # Usage
 Right-click on any top-level folder in the Side Bar, choose "Alias Folder", and type the alias you want. Simple!
