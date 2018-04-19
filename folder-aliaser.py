@@ -47,6 +47,7 @@ class ProjectFolders:
 		'''
 		for folder in self._folders:
 			if folder['path'] == path:
+				# Return the alias, or if none given return the name of the folder itself
 				return folder.get('name', folder['path'].split('/')[-1])
 		return None
 
