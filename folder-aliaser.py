@@ -47,21 +47,15 @@ class ProjectFolders:
 		'''
 		for folder in self._folders:
 			if folder['path'] == path:
-				if 'name' in folder:
-					return folder['name']
-				else:
-					# Return the last part of the path
-					return folder['path'].split('/')[-1]
-
+				# Return the alias, or if none given return the name of the folder itself
+				return folder.get('name', folder['path'].split('/')[-1])
 		return None
 
 	def save(self, folders):
 		'''
 			Saves the given folders list to the current project 'folders' entry.
 		'''
-		projectData = self._window.project_data()
-		projectData['folders'] = folders
-		self._window.set_project_data(projectData)
+		self._window.set_project_data({**self._window.project_data(), 'folders': folders})
 
 		# Update the local version
 		self._folders = folders
@@ -116,7 +110,7 @@ class AliasFolderCommand(sublime_plugin.WindowCommand):
 
 			# Clear alias if empty or the same as the folder name (last part of the path)
 			#
-			if alias == '' or alias == path.split('/')[-1]:
+			if alias in ('', path.split('/')[-1]):
 				if 'name' in targetFolder:
 					targetFolder.pop('name')
 			else:
