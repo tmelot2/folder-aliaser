@@ -55,7 +55,9 @@ class ProjectFolders:
 		'''
 			Saves the given folders list to the current project 'folders' entry.
 		'''
-		self._window.set_project_data({**self._window.project_data(), 'folders': folders})
+		project_data = self._window.project_data()
+		project_data.update({'folders': folders})
+		self._window.set_project_data(project_data)
 
 		# Update the local version
 		self._folders = folders
